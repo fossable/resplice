@@ -111,7 +111,8 @@ mod tests {
     fn test_address_parsing_logic() {
         use syn::punctuated::Punctuated;
 
-        let meta_list: Punctuated<Meta, syn::Token![,]> = parse_quote!(begin = 0x1000, end = 0x2000);
+        let meta_list: Punctuated<Meta, syn::Token![,]> =
+            parse_quote!(begin = 0x1000, end = 0x2000);
 
         let mut begin_addr: Option<u64> = None;
         let mut end_addr: Option<u64> = None;

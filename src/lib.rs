@@ -1,10 +1,10 @@
-pub use splice_macro::Splice;
-pub use inventory;
 pub use anyhow::Result;
+pub use inventory;
+pub use resplice_macro::Splice;
 
+use anyhow::{Context, anyhow};
 use std::fs;
 use std::path::Path;
-use anyhow::{anyhow, Context};
 
 /// Re-export inventory for use in the macro
 pub use inventory::collect;
@@ -177,7 +177,11 @@ impl Binary {
         let start = begin as usize;
 
         if start + jump_code.len() > self.data.len() {
-            return Err(anyhow!("Invalid address range: {:#x} to {:#x}", begin, begin + jump_code.len() as u64));
+            return Err(anyhow!(
+                "Invalid address range: {:#x} to {:#x}",
+                begin,
+                begin + jump_code.len() as u64
+            ));
         }
 
         self.data[start..start + jump_code.len()].copy_from_slice(&jump_code);
@@ -306,7 +310,10 @@ pub fn apply_all_splices<P: AsRef<Path>>(target_path: P, output_path: P) -> Resu
                 binary.apply_direct_patch(splice.begin_addr, splice.end_addr, &code)?;
             }
             Err(e) => {
-                eprintln!("Warning: Failed to extract code for {}: {}", splice.function_name, e);
+                eprintln!(
+                    "Warning: Failed to extract code for {}: {}",
+                    splice.function_name, e
+                );
             }
         }
     }
@@ -540,7 +547,6 @@ mod tests {
         assert!(result.is_err());
     }
 
-
     #[test]
     fn test_multiple_patches() {
         let mut binary = Binary {
@@ -575,7 +581,6 @@ mod tests {
         assert_eq!(binary.data[10], 0x90);
         assert_eq!(binary.data[19], 0x90);
     }
-
 
     #[test]
     fn test_large_jump_offset() {
