@@ -11,10 +11,10 @@ name = "resplice"
 readme = "README.md"
 repository = "https://github.com/fossable/resplice"
 rust-version = "1.85"
-version = "0.1.0"
+version = "0.0.1"
 
 [dependencies]
-resplice-macro = { path = "resplice-macro" }
+resplice-macro = { version = "0.0.1", path = "resplice-macro" }
 object = "0.36"
 goblin = "0.8"
 inventory = "0.3"

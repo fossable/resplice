@@ -1,7 +1,9 @@
 [package]
 name = "resplice-macro"
-version = "0.1.0"
-edition = "2021"
+version = "0.0.1"
+description = "Rewrite it in Rust"
+edition = "2024"
+license = "Unlicense"
 
 [lib]
 proc-macro = true
