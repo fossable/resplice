@@ -1,6 +1,21 @@
+[workspace]
+members = ["resplice-macro"]
+resolver = "2"
+
 [package]
-name = "splice"
+authors = ["Tyler Cook"]
+description = "Rewrite it in Rust"
+edition = "2024"
+license = "Unlicense"
+name = "resplice"
+readme = "README.md"
+repository = "https://github.com/fossable/resplice"
+rust-version = "1.85"
 version = "0.1.0"
-edition = "2021"
 
 [dependencies]
+resplice-macro = { path = "resplice-macro" }
+object = "0.36"
+goblin = "0.8"
+inventory = "0.3"
+anyhow = "1.0"

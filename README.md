@@ -1,7 +1,7 @@
-# Test-driven reverse engineering
+# Declarative binary patching with Rust
 
-*spice* is a library that makes re-implementing sections of machine code in
-Rust more fun.
+**resplice** takes "rewrite it in Rust" to a whole new level. It's a macro that
+makes re-implementing sections of machine code in Rust (a little) more fun.
 
 ## Illustrative example
 
@@ -16,23 +16,38 @@ Take a trivial example that adds 1 + 1 in assembly:
     1680:       d65f03c0        ret
 ```
 
-Now let's implement it in Rust (probably with the help of a decompiler, in practice):
+Now let's reimplement it in Rust (probably with the help of a decompiler, in
+practice):
 
 ```rust
+use resplice::Splice;
+
 #[Splice(begin = 0x1670, end = 0x1680)]
-fn add_one_plus_one() {
-  1 + 1
+fn add_one_plus_one() -> i32 {
+    1 + 1
 }
 ```
 
-What we get now is the original binary augmented with our custom function!
-If we're adequately motivated, we can repeat this step iteratively until our entire
+What we get now is the original binary augmented with our custom function! If
+we're adequately motivated, we can repeat this step iteratively until our entire
 program is reverse engineered in Rust.
 
-Most likely, we only care about reversing a few specific sections.
+But, most likely, we only care about reversing a few specific sections.
 
 ## How it works
 
-As you may have guessed by the name, *spice* forcibly inserts the machine code for
-Rust functions into a target binary (either via direct substitution or via unconditional
-jumps).
+As you may have guessed by the name, `Splice` forcibly inserts the machine code
+for Rust functions into a target binary (either via direct substitution or via
+trampolines).
+
+## Usage
+
+```rust
+use resplice::Splice;
+
+#[Splice(begin = 0x1000, end = 0x1020)]
+fn my_replacement_function() -> i32 {
+    // Your Rust implementation here
+    42
+}
+```
